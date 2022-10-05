@@ -3,6 +3,7 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
+// Finds all tags and includes Product
 router.get('/', async (req, res) => {
   try {
     const tagData = await Tag.findAll({
@@ -14,11 +15,13 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Gets one tag by its id and includes Product
 router.get('/:id', async (req, res) => {
   try {
     const tagData = await Tag.findByPk(req.params.id, {
       include: [{model: Product}]
     });
+    // If there is no tag with that id, an error message is sent
     if (!tagData) {
       res.status(404).json({message: "No tag found with this id!"});
       return;
@@ -29,6 +32,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Creates a new tag
 router.post('/', async (req, res) => {
   try {
     const tagData = await Tag.create(req.body, {
@@ -36,6 +40,7 @@ router.post('/', async (req, res) => {
         id: req.params.id,
       }
     });
+    // If there is no tag with that id, an error message is sent
     if (!tagData) {
       res.status(404).json({message: "No tag found with this id!"});
       return;
@@ -46,6 +51,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Updates a tag by its id
 router.put('/:id', async (req, res) => {
   try {
     const tagData = await Tag.update(req.body, {
@@ -53,6 +59,7 @@ router.put('/:id', async (req, res) => {
         id: req.params.id, 
       }
     });
+    // If there is no tag with that id, an error message is sent
     if (!tagData) {
       res.status(404).json({message: "No tag found with this id!"});
       return;
@@ -63,6 +70,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// Deletes a tag by its id
 router.delete('/:id', async (req, res) => {
   try {
     const tagData = await Tag.destroy({
@@ -70,6 +78,7 @@ router.delete('/:id', async (req, res) => {
         id: req.params.id
       }
     });
+    // If there is no tag with that id, an error message is sent
     if (!tagData) {
       res.status(404).json({message: "No tag found with this id!"});
       return;
